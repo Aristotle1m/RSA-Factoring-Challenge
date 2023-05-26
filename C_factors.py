@@ -1,27 +1,45 @@
-#!/usr/bin/python3
-import sys
+"""This module contains helper functions for all the other modules used in this
+    project
+"""
 
+def product(lst):
+    """ Return product of all numbers in a list
+    """
+    prod = 1
+    for _ in lst:
+        prod *= _
+    return prod
 
-def factorize(num):
-    """ Generate 2 factors for a given number"""
-    factor1 = 2
-    while (num % factor1):
-        if (factor1 <= num):
-            factor1 += 1
+def gcd(a, b):
+    """ Returns the greatest common divisor of the two numbers
+    """
+    while b:
+        a, b = b, a % b
+    return a
 
-    factor2 = num // factor1
-    return (factor2, factor1)
+def kth_iroot(n, k):
+    """ Return the integer k-th root of a number by Newton's method
+    """
+    u = n
+    s = n + 1
+    while u < s:
+        s = u
+        t = (k - 1) * s + n // pow(s, k - 1)
+        u = t // k
+    return s
 
-
-if len(sys.argv) != 2:
-    sys.exit(f"Wrong usage: {sys.argv[0]} <file_path>")
-
-filename = sys.argv[1]
-
-file = open(filename, 'r')
-lines = file.readlines()
-
-for line in lines:
-    num = int(line.rstrip())
-    factor2, factor1 = factorize(num)
-    print(f"{num} = {factor2} * {factor1}")
+def isqrt(n):
+    """ Return the square root of a number rounded down to the closest integer
+    """
+    if n < 0:
+        raise ValueError("Square root of negative number!")
+    x = int(n)
+    if n == 0:
+        return 0
+    a, b = divmod(x.bit_length(), 2)
+    n = 2 ** (a + b)
+    while True:
+        y = (n + x // n) // 2
+        if y >= x:
+            return x
+        x = y
